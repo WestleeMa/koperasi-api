@@ -18,9 +18,11 @@ async function tambahSimpanan(req, res) {
             keterangan: "Setoran bulanan",
             kategori: "Wajib",
           });
-          await db("tbl_anggota").update({
-            simpanan: dataUser.simpanan + 25000,
-          });
+          await db("tbl_anggota")
+            .where({ idanggota })
+            .update({
+              simpanan: dataUser.simpanan + 25000,
+            });
           res.status(200).send("Berhasil membayar simpanan bulanan");
         }
       } else if (kategori == "Sukarela") {
@@ -33,9 +35,11 @@ async function tambahSimpanan(req, res) {
             keterangan: "Setoran sukarela",
             kategori: "Sukarela",
           });
-          await db("tbl_anggota").update({
-            simpanan: dataUser.simpanan + pareseInt(jumlah),
-          });
+          await db("tbl_anggota")
+            .where({ idanggota })
+            .update({
+              simpanan: dataUser.simpanan + parseInt(jumlah),
+            });
           res.status(200).send("Berhasil membayar simpanan sukarela");
         }
       } else {
