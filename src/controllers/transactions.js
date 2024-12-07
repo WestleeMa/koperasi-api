@@ -34,7 +34,7 @@ async function tambahSimpanan(req, res) {
             kategori: "Sukarela",
           });
           await db("tbl_anggota").update({
-            simpanan: dataUser.simpanan + jumlah,
+            simpanan: dataUser.simpanan + pareseInt(jumlah),
           });
           res.status(200).send("Berhasil membayar simpanan sukarela");
         }
