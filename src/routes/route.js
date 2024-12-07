@@ -1,12 +1,22 @@
 const { login, register } = require("../controllers/auth");
-const { getUser } = require("../controllers/user");
-const { tambahSimpanan } = require("../controllers/transactions");
+const { getUser, editUser, deleteUser } = require("../controllers/user");
+const { getSimpanan } = require("../controllers/simpan");
+const {
+  tambahSimpanan,
+  tambahPinjaman,
+  pelunasanPinjaman,
+} = require("../controllers/transactions");
 const express = require("express");
 const router = express.Router();
 
+router.get("/user", getUser);
+router.get("/simpanan", getSimpanan);
 router.post("/login", login);
 router.post("/regist", register);
-router.get("/user", getUser);
 router.post("/simpan", tambahSimpanan);
+router.post("/pinjam", tambahPinjaman);
+router.post("/pelunasan", pelunasanPinjaman);
+router.post("/editUser", editUser);
+router.post("/deleteUser", deleteUser);
 
 module.exports = router;

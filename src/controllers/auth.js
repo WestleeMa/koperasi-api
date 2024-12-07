@@ -27,7 +27,7 @@ async function login(req, res) {
 async function register(req, res) {
   try {
     const { nama, role, password, email } = req.body;
-    if (!nama || !role || !password || !email || !simpanan) {
+    if (!nama || !role || !password || !email) {
       res.status(400).send("Tolong penuhi semua kolom registrasi");
     } else {
       const checkUser = await db("tbl_anggota").where("email", email).first();
@@ -44,6 +44,23 @@ async function register(req, res) {
               simpanan: 50000,
               password: hash,
               email,
+            });
+
+            const idanggota = await db("tbl_anggota").where({ email }).first();
+            if (idanggota.idanggota) {
+              await db("tbl_simpan").insert({
+                idanggota: idanggota.idanggota,
+                jumlah: 50000,
+                keterangan: "Simpanan pokok",
+                kategori: "Wajib",
+              });
+            }
+
+            const totalsimpan = await db("tbl_simpan")
+              .sum("jumlah as TotalSimpan")
+              .first();
+            await db("tbl_total_transaksi").where({ idtransaksi: 1 }).update({
+              totalsimpan: totalsimpan.TotalSimpan,
             });
             res.status(200).send("Berhasil terdaftar");
           }
