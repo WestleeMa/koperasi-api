@@ -17,6 +17,6 @@ router.post("/simpan", tambahSimpanan);
 router.post("/pinjam", tambahPinjaman);
 router.post("/pelunasan", pelunasanPinjaman);
 router.post("/editUser", editUser);
-router.post("/deleteUser", deleteUser);
+router.delete("/deleteUser", deleteUser);
 
 module.exports = router;
