@@ -1,6 +1,6 @@
 const { login, register } = require("../controllers/auth");
 const { getUser, editUser, deleteUser } = require("../controllers/user");
-const { getSimpanan } = require("../controllers/simpan");
+const { getSimpanPinjam } = require("../controllers/simpanpinjam");
 const {
   tambahSimpanan,
   tambahPinjaman,
@@ -10,7 +10,7 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/user", getUser);
-router.get("/simpanan", getSimpanan);
+router.get("/simpanan", getSimpanPinjam);
 router.post("/login", login);
 router.post("/regist", register);
 router.post("/simpan", tambahSimpanan);
