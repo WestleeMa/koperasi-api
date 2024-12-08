@@ -10,7 +10,7 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/user", getUser);
-router.get("/simpanan", getSimpanPinjam);
+router.post("/simpanpinjam", getSimpanPinjam);
 router.post("/login", login);
 router.post("/regist", register);
 router.post("/simpan", tambahSimpanan);
