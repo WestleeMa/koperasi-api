@@ -26,8 +26,8 @@ async function login(req, res) {
 
 async function register(req, res) {
   try {
-    const { nama, role, password, email } = req.body;
-    if (!nama || !role || !password || !email) {
+    const { nama, password, email } = req.body;
+    if (!nama || !password || !email) {
       res.status(400).send("Tolong penuhi semua kolom registrasi");
     } else {
       const checkUser = await db("tbl_anggota").where("email", email).first();
@@ -40,7 +40,7 @@ async function register(req, res) {
           } else {
             await db("tbl_anggota").insert({
               nama,
-              role,
+              role: "anggota",
               simpanan: 50000,
               password: hash,
               email,

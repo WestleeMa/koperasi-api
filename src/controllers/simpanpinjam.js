@@ -26,8 +26,13 @@ async function getSimpanPinjam(req, res) {
           }
         } else if (idanggota) {
           const dataSimpanan = await db("tbl_simpan").where({ idanggota });
+          const dataTotal = await db("tbl_anggota")
+            .where({ idanggota })
+            .first();
           if (dataSimpanan) {
-            res.status(200).send(dataSimpanan);
+            res
+              .status(200)
+              .send({ Total: dataTotal.simpanan, List: dataSimpanan });
           } else {
             res.status(400).send("Data simpanan tersebut tidak ada");
           }
