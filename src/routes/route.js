@@ -5,6 +5,7 @@ const {
   tambahSimpanan,
   tambahPinjaman,
   pelunasanPinjaman,
+  deleteSimpanPinjam,
 } = require("../controllers/transactions");
 const express = require("express");
 const router = express.Router();
@@ -18,5 +19,6 @@ router.post("/pinjam", tambahPinjaman);
 router.post("/pelunasan", pelunasanPinjaman);
 router.post("/editUser", editUser);
 router.delete("/deleteUser", deleteUser);
+router.delete("/deleteSimpanPinjam", deleteSimpanPinjam);
 
 module.exports = router;
