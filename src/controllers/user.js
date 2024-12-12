@@ -29,26 +29,39 @@ async function editUser(req, res) {
       res.status(400).send("Request tidak lengkap");
     } else if (!nama && !simpanan && !role && !email && !password) {
       res.status(201).send("Tidak ada perubahan");
-    } else if (role !== "pengurus" || role !== "anggota") {
+    } else if (role !== "pengurus" && role !== "anggota") {
       res.status(400).send("role harus pengurus atau anggota");
     } else {
-      if (password) {
-        bcrypt.hash(password, 12, async function (err, hash) {
+      const checkEmail = await db("tbl_anggota")
+        .where({ email })
+        .andWhereNot({ idanggota })
+        .first();
+      if (checkEmail) {
+        res.status(400).send("Sudah ada yang pakai email tersebut");
+      } else {
+        if (
+          password &&
+          password !== "" &&
+          password !== " " &&
+          password !== null
+        ) {
+          bcrypt.hash(password, 12, async function (err, hash) {
+            await db("tbl_anggota").where({ idanggota }).update({
+              password: hash,
+              simpanan,
+              role,
+              email,
+            });
+            res.status(200).send("Berhasil mengubah data anggota");
+          });
+        } else {
           await db("tbl_anggota").where({ idanggota }).update({
-            password: hash,
             simpanan,
             role,
             email,
           });
           res.status(200).send("Berhasil mengubah data anggota");
-        });
-      } else {
-        await db("tbl_anggota").where({ idanggota }).update({
-          simpanan,
-          role,
-          email,
-        });
-        res.status(200).send("Berhasil mengubah data anggota");
+        }
       }
     }
   } catch (error) {

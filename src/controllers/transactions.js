@@ -31,9 +31,9 @@ async function tambahSimpanan(req, res) {
           res.status(200).send("Berhasil membayar simpanan bulanan");
         }
       } else if (kategori == "Sukarela") {
-        if (jumlah < 10000) {
+        if (jumlah < 10000 && jumlah == null && !jumlah) {
           res.status(400).send("minimal Rp. 10.000,-");
-        } else {
+        } else if (jumlah && jumlah > 9999) {
           await db("tbl_simpan").insert({
             idanggota,
             jumlah,

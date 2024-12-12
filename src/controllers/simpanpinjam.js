@@ -24,7 +24,7 @@ async function getSimpanPinjam(req, res) {
           } else {
             res.status(400).send("Data simpanan tersebut tidak ada");
           }
-        } else if (idanggota) {
+        } else if (idanggota && idanggota !== null) {
           const dataSimpanan = await db("tbl_simpan").where({ idanggota });
           const dataTotal = await db("tbl_anggota")
             .where({ idanggota })
@@ -37,8 +37,21 @@ async function getSimpanPinjam(req, res) {
             res.status(400).send("Data simpanan tersebut tidak ada");
           }
         } else {
-          const response = await db("tbl_simpan");
-          res.status(200).send(response);
+          const responseTotal = await db("tbl_total_transaksi")
+            .select("totalsimpan")
+            .where({ idtransaksi: 1 })
+            .first();
+          const response = await db("tbl_simpan")
+            .join(
+              "tbl_anggota",
+              "tbl_simpan.idanggota",
+              "=",
+              "tbl_anggota.idanggota"
+            )
+            .select("tbl_simpan.*", "tbl_anggota.nama");
+          res
+            .status(200)
+            .send({ Total: responseTotal.totalsimpan, List: response });
         }
       } else if (tbl == "pinjam") {
         if (id && idanggota) {
@@ -58,17 +71,32 @@ async function getSimpanPinjam(req, res) {
           } else {
             res.status(400).send("Data pinjaman tersebut tidak ada");
           }
-        } else if (idanggota) {
+        } else if (idanggota && idanggota !== null) {
           const dataPinjaman = await db("tbl_pinjam").where({ idanggota });
           if (dataPinjaman) {
-            res.status(200).send(dataPinjaman);
+            res.status(200).send({ List: dataPinjaman });
           } else {
             res.status(400).send("Data pinjaman tersebut tidak ada");
           }
         } else {
-          const response = await db("tbl_pinjam");
-          res.status(200).send(response);
+          const responseTotal = await db("tbl_total_transaksi")
+            .select("totalpinjam")
+            .where({ idtransaksi: 1 })
+            .first();
+          const response = await db("tbl_pinjam")
+            .join(
+              "tbl_anggota",
+              "tbl_pinjam.idanggota",
+              "=",
+              "tbl_anggota.idanggota"
+            )
+            .select("tbl_pinjam.*", "tbl_anggota.nama");
+          res
+            .status(200)
+            .send({ Total: responseTotal.totalpinjam, List: response });
         }
+      } else {
+        res.status(400).send("Tidak ada tabel tersebut");
       }
     }
   } catch (error) {
